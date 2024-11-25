@@ -1,6 +1,7 @@
 from road import Road
 from vehicle import Vehicle
 from four_way import FourWay
+from traffic_light import TrafficLight
 
 def get_new_direction(direction):
     if direction == 1:
@@ -67,6 +68,18 @@ def initialize_four_ways(horizontal_roads, vertical_roads):
             h_road.four_ways.append(four_way)
     
     return four_ways
-            # four_way = FourWay(roads.)
 
-            # print(f"vehicle {i * n + j} added to four way {four_way.id}")
+
+def initialize_traffic_lights(four_ways):
+    counter = 1
+    for four_way in four_ways:
+        traffic_light_1 = TrafficLight(counter, four_way, four_way.road1)
+        counter += 1
+        traffic_light_2 = TrafficLight(counter, four_way, four_way.road2)
+        counter += 1
+        
+        four_way.traffic_light_1 = traffic_light_1
+        four_way.traffic_light_2 = traffic_light_2
+        print(f"initialized traffic_light {traffic_light_1.id} four_way: {traffic_light_1.four_way.id}, road {traffic_light_1.road.id}")
+        print(f"initialized traffic_light {traffic_light_2.id} four_way: {traffic_light_2.four_way.id}, road {traffic_light_2.road.id}")
+        
