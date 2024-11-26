@@ -27,12 +27,12 @@ class Simulation:
         print (f"Simulation Started!!-----------------------------------------------------------------------")
         for self.iteration_number in range(self.max_time_steps):
             print (f"iteration: {self.iteration_number} started-------------------------------------------------")
-            # new_vehicles, new_vehicle_id_counter = initialize_vehicles(self.iteration_number, self.roads, self.iteration_vehicle_generation, self.max_vehicle_count, self.vehicle_id_counter, self.row_count, self.column_count)
             
-            # for vehicle in new_vehicles:
-                # self.vehicles.append(vehicle)
+            new_vehicles, new_vehicle_id_counter = initialize_vehicles(self.iteration_number, self.roads, self.iteration_vehicle_generation, self.max_vehicle_count, self.vehicle_id_counter, self.row_count, self.column_count)
+            self.vehicle_id_counter = new_vehicle_id_counter
+            for vehicle in new_vehicles:
+                self.vehicles.append(vehicle)
             
-            # self.vehicle_id_counter = new_vehicle_id_counter
             # vehicles_event_handler(self.vehicles, self.roads, self.four_ways, self.iteration_number)
             print (f"iteration: {self.iteration_number} ended-------------------------------------------------------")
             

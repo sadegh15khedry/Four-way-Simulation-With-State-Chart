@@ -70,12 +70,12 @@ def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, 
         
         # x, y = start_road.start_x , start_y
         # id, current_road, x, y, travel_start_time, start_road, end_road)
-        vehicle = Vehicle(vehicle_id_counter, start_road, startx, y, iteration_number, start_road, end_road)
+        vehicle = Vehicle(vehicle_id_counter, iteration_number, start_road, end_road)
         vehicles.append(vehicle)
         vehicle_id_counter += 1
         iteration_vehicle_generation_counter += 1
-        print (f"road:{start_road.id}, direction:{start_road.direction}")
-        print(f"Vehicle {vehicle.id} x:{x}, y:{y} start_road:{vehicle.start_road.id}, end_road:{vehicle.end_road.id}, time={vehicle.travel_start_time} ")
+        # print (f"road:{start_road.id}, direction:{start_road.direction}")
+        print(f"Vehicle {vehicle.id} start_road:{vehicle.start_road.id}, start_x:{vehicle.start_x}, start_y:{vehicle.start_y}  , end_road:{vehicle.end_road.id} end_x:{vehicle.end_x}, end_y:{vehicle.end_y}, time={vehicle.travel_start_time} ")
     return vehicles, vehicle_id_counter
 
 def initialize_four_ways(horizontal_roads, vertical_roads):

@@ -1,7 +1,7 @@
 class Vehicle:
-    def __init__(self, id, current_road, travel_start_time, start_road, end_road):
+    def __init__(self, id, travel_start_time, start_road, end_road):
         self.id = id
-        self.current_road = current_road
+        self.current_road = start_road
         
         self.current_x = start_road.start_x
         self.current_y = start_road.start_y
