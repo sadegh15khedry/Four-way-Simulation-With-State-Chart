@@ -5,6 +5,6 @@ class FourWay:
         self.column_index = column_index
         self.road1 = road1
         self.road2 = road2
-        self.traffic_lights = []
         self.traffic_light_1 = None
         self.traffic_light_2 = None
+        
