@@ -2,6 +2,7 @@ from road import Road
 from vehicle import Vehicle
 from four_way import FourWay
 from traffic_light import TrafficLight
+from graph import Graph
 import random
 
 def get_new_direction(direction):
@@ -92,13 +93,19 @@ def initialize_four_ways(horizontal_roads, vertical_roads):
     
     return four_ways
 
+def initialize_graph(roads, four_ways):
+    graph = Graph()
+    
+    
+    return graph
+
 
 def initialize_traffic_lights(four_ways):
     counter = 1
     for four_way in four_ways:
-        traffic_light_1 = TrafficLight(counter, four_way, four_way.road1)
+        traffic_light_1 = TrafficLight(counter, four_way, four_way.horizontal_road)
         counter += 1
-        traffic_light_2 = TrafficLight(counter, four_way, four_way.road2)
+        traffic_light_2 = TrafficLight(counter, four_way, four_way.vertical_road)
         counter += 1
         
         
