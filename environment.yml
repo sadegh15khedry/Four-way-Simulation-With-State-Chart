@@ -1,4 +1,4 @@
-name: iscas
+name: fourway
 channels:
   - defaults
   - https://repo.anaconda.com/pkgs/main
