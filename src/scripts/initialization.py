@@ -59,15 +59,6 @@ def initialize_vertical_and_horizontal_roads(roads):
             
     return horizontal_roads, vertical_roads
 
-def get_start_position(road, row_count, column_count):
-        if road.direction == 1:
-            return (row_count, road.column_index)
-        elif road.direction == 3:
-            return (1, road.column_index)
-        elif road.direction == 2:
-            return (road.row_index, 1)
-        elif road.direction == 4:
-            return (road.row_index - 1, column_count)
 
 def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, max_vehicle_count, vehicle_id_counter, row_count, column_count):
     vehicles = []
@@ -95,7 +86,7 @@ def initialize_four_ways(horizontal_roads, vertical_roads):
             four_way = FourWay(count, h_road.row_index, v_road.column_index, h_road, v_road)
             count += 1
             four_ways.append(four_way)
-            print(f"four way {four_way.id} created between road {h_road.id} and road {v_road.id}")
+            print(f"four way:{four_way.id} x:{four_way.x} y:{four_way.y}, horizontal_road {h_road.id}, vertical_road {v_road.id}")
             v_road.four_ways.append(four_way)
             h_road.four_ways.append(four_way)
     

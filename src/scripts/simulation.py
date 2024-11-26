@@ -19,10 +19,9 @@ class Simulation:
         
         
     def run(self):
-        # print(self.row_count, self.column_count)
         self.roads = initialize_roads(self.row_count, self.column_count)
-        # self.horizontal_roads, self.vertical_roads = initialize_vertical_and_horizontal_roads(self.roads)
-        # self.four_ways = initialize_four_ways(self.horizontal_roads, self.vertical_roads)
+        self.horizontal_roads, self.vertical_roads = initialize_vertical_and_horizontal_roads(self.roads)
+        self.four_ways = initialize_four_ways(self.horizontal_roads, self.vertical_roads)
         # initialize_traffic_lights(self.four_ways)
         
         print (f"Simulation Started!!-----------------------------------------------------------------------")

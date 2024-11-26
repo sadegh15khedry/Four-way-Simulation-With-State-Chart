@@ -1,10 +1,10 @@
 class FourWay:
-    def __init__(self, id, row_index, column_index, road1, road2):
+    def __init__(self, id, x, y, horizontal_road, vertical_road):
         self.id = id
-        self.row_index = row_index
-        self.column_index = column_index
-        self.road1 = road1
-        self.road2 = road2
-        self.traffic_light_1 = None
-        self.traffic_light_2 = None
+        self.x = x
+        self.y = y
+        self.horizontal_road = horizontal_road
+        self.vertical_road = vertical_road
+        self.horizontal_traffic_light = None
+        self.vertical_traffic_light = None
         
