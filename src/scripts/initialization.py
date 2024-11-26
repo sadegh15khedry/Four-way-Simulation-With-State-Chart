@@ -3,7 +3,9 @@ from vehicle import Vehicle
 from four_way import FourWay
 from traffic_light import TrafficLight
 from graph import Graph
+from node import Node
 import random
+
 
 def get_new_direction(direction):
     if direction == 1:
@@ -93,10 +95,38 @@ def initialize_four_ways(horizontal_roads, vertical_roads):
     
     return four_ways
 
-def initialize_graph(roads, four_ways):
-    graph = Graph()
+def initialize_graph(roads, four_ways, vertical_roads, horizontal_roads, min_weight, max_weight):
+    graph = Graph(min_weight, max_weight)
+    node_counter = 1
+    for road in roads:
+        node = Node(node_counter, road.start_x, road.start_y)
+        node_counter += 1
+        graph.nodes.append(node)
+        print(f"node:{node.id} x:{node.x} y:{node.y}")
+        
+        for four_way in four_ways:
+            node = Node(node_counter, four_way.x, four_way.y)
+            node_counter += 1
+            graph.nodes.append(node)
+            print(f"node:{node.id} x:{node.x} y:{node.y}")
+        
+        node = Node(node_counter, road.end_x, road.end_y)
+        node_counter += 1
+        graph.nodes.append(node)
+        print(f"node:{node.id} x:{node.x} y:{node.y}")
+        
+    for four_way in four_ways:
+        node = Node(node_counter, four_way.x, four_way.y)
+        node_counter += 1
+        graph.nodes.append(node)
+        print(f"node:{node.id} x:{node.x} y:{node.y}")
     
-    
+    for road in vertical_roads:
+        graph.find_neighbors(road.row_index, road.column_index, road.direction)
+    for road in horizontal_roads:
+        graph.find_neighbors(road.row_index, road.column_index, road.direction)
+       
+
     return graph
 
 

@@ -1,11 +1,13 @@
-from initialization import initialize_roads, initialize_four_ways, initialize_vehicles, initialize_vertical_and_horizontal_roads, initialize_traffic_lights
+from initialization import initialize_roads, initialize_four_ways, initialize_graph, initialize_vehicles, initialize_vertical_and_horizontal_roads, initialize_traffic_lights
 from movement_management import vehicles_event_handler
 class Simulation:
-    def __init__(self, row_count, column_count, max_time_steps, max_vehicle_count, iteration_vehicle_generation):
+    def __init__(self, row_count, column_count, max_time_steps, max_vehicle_count, iteration_vehicle_generation, min_road_time, max_road_time):
         self.row_count = row_count
         self.column_count = column_count
         self.max_time_steps = max_time_steps
         self.max_vehicle_count = max_vehicle_count
+        self.min_road_time = min_road_time
+        self.max_road_time = max_road_time
         self.iteration_vehicle_generation = iteration_vehicle_generation
         self.vehicle_id_counter = 1
         self.iteration_number = 0
@@ -15,6 +17,7 @@ class Simulation:
         self.traffic_lights = []
         self.vertical_roads = []
         self.horizontal_roads = []
+        self.graph = None
         
         
         
@@ -23,6 +26,8 @@ class Simulation:
         self.horizontal_roads, self.vertical_roads = initialize_vertical_and_horizontal_roads(self.roads)
         self.four_ways = initialize_four_ways(self.horizontal_roads, self.vertical_roads)
         initialize_traffic_lights(self.four_ways)
+        self.graph = initialize_graph(self.roads, self.four_ways, self.vertical_roads, self.horizontal_roads, self.min_road_time, self.max_road_time)
+        self.graph.draw()
         
         print (f"Simulation Started!!-----------------------------------------------------------------------")
         for self.iteration_number in range(self.max_time_steps):
