@@ -104,12 +104,6 @@ def initialize_graph(roads, four_ways, vertical_roads, horizontal_roads, min_wei
         graph.nodes.append(node)
         print(f"node:{node.id} x:{node.x} y:{node.y}")
         
-        for four_way in four_ways:
-            node = Node(node_counter, four_way.x, four_way.y)
-            node_counter += 1
-            graph.nodes.append(node)
-            print(f"node:{node.id} x:{node.x} y:{node.y}")
-        
         node = Node(node_counter, road.end_x, road.end_y)
         node_counter += 1
         graph.nodes.append(node)
@@ -121,12 +115,15 @@ def initialize_graph(roads, four_ways, vertical_roads, horizontal_roads, min_wei
         graph.nodes.append(node)
         print(f"node:{node.id} x:{node.x} y:{node.y}")
     
-    for road in vertical_roads:
+    
+    for road in roads:
         graph.find_neighbors(road.row_index, road.column_index, road.direction)
-    for road in horizontal_roads:
-        graph.find_neighbors(road.row_index, road.column_index, road.direction)
+    # for four_way in four_ways:
+    #     node = Node(node_counter, four_way.x, four_way.y)
+    #     node_counter += 1
+    #     graph.nodes.append(node)
+    #     print(f"node:{node.id} x:{node.x} y:{node.y}")
        
-
     return graph
 
 
@@ -137,7 +134,6 @@ def initialize_traffic_lights(four_ways):
         counter += 1
         traffic_light_2 = TrafficLight(counter, four_way, four_way.vertical_road)
         counter += 1
-        
         
         four_way.traffic_light_1 = traffic_light_1
         four_way.traffic_light_2 = traffic_light_2
