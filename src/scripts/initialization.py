@@ -62,7 +62,6 @@ def initialize_vertical_and_horizontal_roads(roads):
             
     return horizontal_roads, vertical_roads
 
-
 def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, max_vehicle_count, vehicle_id_counter, row_count, column_count, graph):
     vehicles = []
     iteration_vehicle_generation_counter = 1
@@ -128,17 +127,16 @@ def initialize_graph(roads, four_ways, vertical_roads, horizontal_roads, min_wei
        
     return graph
 
-
 def initialize_traffic_lights(four_ways):
     counter = 1
     for four_way in four_ways:
-        traffic_light_1 = TrafficLight(counter, four_way, four_way.horizontal_road)
+        horizontal_traffic_light = TrafficLight(counter, four_way, four_way.horizontal_road)
         counter += 1
-        traffic_light_2 = TrafficLight(counter, four_way, four_way.vertical_road)
+        vertical_traffic_light = TrafficLight(counter, four_way, four_way.vertical_road)
         counter += 1
         
-        four_way.traffic_light_1 = traffic_light_1
-        four_way.traffic_light_2 = traffic_light_2
-        print(f"initialized traffic_light {traffic_light_1.id} four_way: {traffic_light_1.four_way.id}, road {traffic_light_1.road.id}")
-        print(f"initialized traffic_light {traffic_light_2.id} four_way: {traffic_light_2.four_way.id}, road {traffic_light_2.road.id}")
-        
+        four_way.horizontal_traffic_light = horizontal_traffic_light
+        four_way.vertical_traffic_light = vertical_traffic_light
+        print(f"initialized traffic_light {horizontal_traffic_light.id} four_way: {horizontal_traffic_light.four_way.id}, road {horizontal_traffic_light.road.id}")
+        print(f"initialized traffic_light {vertical_traffic_light.id} four_way: {vertical_traffic_light.four_way.id}, road {vertical_traffic_light.road.id}")
+    

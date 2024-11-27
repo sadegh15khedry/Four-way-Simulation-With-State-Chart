@@ -1,7 +1,10 @@
 from initialization import initialize_roads, initialize_four_ways, initialize_graph, initialize_vehicles, initialize_vertical_and_horizontal_roads, initialize_traffic_lights
 
 class Simulation:
-    def __init__(self, row_count, column_count, max_time_steps, max_vehicle_count, iteration_vehicle_generation, min_road_time, max_road_time):
+    def __init__(self, method, default_timer, row_count, column_count, max_time_steps, max_vehicle_count, iteration_vehicle_generation, min_road_time, max_road_time, yellow_light_duration):
+        self.method = method
+        self.default_timer = default_timer
+        self.yellow_light_duration = yellow_light_duration
         self.row_count = row_count
         self.column_count = column_count
         self.max_time_steps = max_time_steps
@@ -26,6 +29,10 @@ class Simulation:
         self.horizontal_roads, self.vertical_roads = initialize_vertical_and_horizontal_roads(self.roads)
         self.four_ways = initialize_four_ways(self.horizontal_roads, self.vertical_roads)
         initialize_traffic_lights(self.four_ways)
+
+        for four_way in self.four_ways:
+            four_way.initialize_traffic_lights_colors(self.method, self.default_timer, self.yellow_light_duration)        
+                
         self.graph = initialize_graph(self.roads, self.four_ways, self.vertical_roads, self.horizontal_roads, self.min_road_time, self.max_road_time)
         self.graph.draw()
         
@@ -39,7 +46,6 @@ class Simulation:
                 self.vehicles.append(vehicle)
             
             for vehicle in self.vehicles:
-                # print('here')
                 vehicle.check_event(self.iteration_number)
                 
                 
