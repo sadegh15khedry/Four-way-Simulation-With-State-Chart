@@ -114,11 +114,6 @@ class Graph:
 
 
 
-
-
-
-
-
     def find_neighbors(self, row_index, column_index, road_direction):
         print(f"row{row_index} column:{column_index}, direction{road_direction}")
         for first_node in self.nodes:
@@ -162,10 +157,10 @@ class Graph:
         distances[source_node] = 0
 
         # Priority queue for the nodes to visit
-        queue = [(0, source_node)]
+        queue = [(0, source_node.id, source_node)]
         
         while queue:
-            current_distance, current_node = heapq.heappop(queue)
+            current_distance, _, current_node = heapq.heappop(queue)
             
             # If we reached the destination, break
             if current_node == destination_node:
@@ -181,7 +176,7 @@ class Graph:
                 if distance < distances[neighbor]:
                     distances[neighbor] = distance
                     previous_nodes[neighbor] = (current_node, weight)
-                    heapq.heappush(queue, (distance, neighbor))
+                    heapq.heappush(queue, (distance, neighbor.id, neighbor))
         
         # Reconstruct the path from destination to source
         path = []
@@ -203,6 +198,7 @@ class Graph:
         path.append({'x': source_node.x, 'y': source_node.y, 'weight': 0})
         path.reverse()  # Reverse the path to start from the source
         return path
+
 
     
 
