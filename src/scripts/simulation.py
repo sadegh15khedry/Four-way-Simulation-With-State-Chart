@@ -1,5 +1,5 @@
 from initialization import initialize_roads, initialize_four_ways, initialize_graph, initialize_vehicles, initialize_vertical_and_horizontal_roads, initialize_traffic_lights
-from movement_management import vehicles_event_handler
+
 class Simulation:
     def __init__(self, row_count, column_count, max_time_steps, max_vehicle_count, iteration_vehicle_generation, min_road_time, max_road_time):
         self.row_count = row_count
@@ -38,6 +38,11 @@ class Simulation:
             for vehicle in new_vehicles:
                 self.vehicles.append(vehicle)
             
+            for vehicle in self.vehicles:
+                # print('here')
+                vehicle.check_event(self.iteration_number)
+                
+                
             # vehicles_event_handler(self.vehicles, self.roads, self.four_ways, self.iteration_number)
             print (f"iteration: {self.iteration_number} ended-------------------------------------------------------")
             
