@@ -15,6 +15,7 @@ class Vehicle:
         self.start_road = start_road
         self.end_road = end_road
         self.travel_end = None
+        self.path = []
         self.events = []
         
         

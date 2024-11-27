@@ -63,7 +63,7 @@ def initialize_vertical_and_horizontal_roads(roads):
     return horizontal_roads, vertical_roads
 
 
-def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, max_vehicle_count, vehicle_id_counter, row_count, column_count):
+def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, max_vehicle_count, vehicle_id_counter, row_count, column_count, graph):
     vehicles = []
     iteration_vehicle_generation_counter = 1
     while vehicle_id_counter <= max_vehicle_count and iteration_vehicle_generation_counter <= iteration_vehicle_generation:
@@ -74,11 +74,13 @@ def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, 
         # x, y = start_road.start_x , start_y
         # id, current_road, x, y, travel_start_time, start_road, end_road)
         vehicle = Vehicle(vehicle_id_counter, iteration_number, start_road, end_road)
+        vehicle.path = graph.shortest_path(vehicle.start_x, vehicle.start_y, vehicle.end_x, vehicle.end_y,)
         vehicles.append(vehicle)
         vehicle_id_counter += 1
         iteration_vehicle_generation_counter += 1
         # print (f"road:{start_road.id}, direction:{start_road.direction}")
         print(f"Vehicle {vehicle.id} start_road:{vehicle.start_road.id}, start_x:{vehicle.start_x}, start_y:{vehicle.start_y}  , end_road:{vehicle.end_road.id} end_x:{vehicle.end_x}, end_y:{vehicle.end_y}, time={vehicle.travel_start_time} ")
+        print(f"path: {vehicle.path}")
     return vehicles, vehicle_id_counter
 
 def initialize_four_ways(horizontal_roads, vertical_roads):

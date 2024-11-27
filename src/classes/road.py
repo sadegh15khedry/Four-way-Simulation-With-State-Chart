@@ -21,10 +21,10 @@ class Road:
         # print(f"direction {self.direction} column_index={self.column_index} row_index = {self.row_index} row_count {row_count} column_count {column_count}")
         # print(self.row_index, self.column_index)
         if self.direction == 1:
-            self.start_x = row_count+1
+            self.start_x = 0
             self.start_y = self.column_index
         elif self.direction == 3:
-            self.start_x = 0
+            self.start_x = row_count+1
             self.start_y = self.column_index
             
             
@@ -38,10 +38,10 @@ class Road:
     def set_end_location (self, row_count, column_count):
         # print(self.row_index, self.column_index)
         if self.direction == 1:
-            self.end_x = 0
+            self.end_x = row_count+1
             self.end_y = self.column_index
         elif self.direction == 3:
-            self.end_x = row_count+1
+            self.end_x = 0
             self.end_y = self.column_index
             
             
