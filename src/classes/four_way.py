@@ -1,7 +1,7 @@
 import random
 
 class FourWay:
-    def __init__(self, id, x, y, horizontal_road, vertical_road):
+    def __init__(self, id, x, y, horizontal_road, vertical_road, default_timer, yellow_timer, blinking_timer):
         self.id = id
         self.x = x
         self.y = y
@@ -9,8 +9,9 @@ class FourWay:
         self.vertical_road = vertical_road
         self.horizontal_traffic_light = None
         self.vertical_traffic_light = None
-        self.default_timer = None
-        self.yellow_timer = None
+        self.default_timer = default_timer
+        self.yellow_timer = yellow_timer
+        self.blinking_timer = blinking_timer
         self.vehicles = []
 
 
@@ -35,13 +36,21 @@ class FourWay:
                 
                 self.horizontal_traffic_light.state = 3
                 self.horizontal_traffic_light.time_remaining = self.default_timer + self.yellow_timer
-                
-            self.print_four_way_status()
+                        
+        elif method == 'proposed':
+            self.horizontal_traffic_light.state = 0
+            self.horizontal_traffic_light.time_remaining = self.blinking_timer
+            self.horizontal_traffic_light.blinking_timer = self.blinking_timer
+            
+            
+            self.vertical_traffic_light.state = 0
+            self.vertical_traffic_light.time_remaining = self.blinking_timer
+            self.vertical_traffic_light.blinking_timer = self.blinking_timer
+            
+        self.print_four_way_status()
+        
     
-    def update_traffic_light_color(self, method, time):
-        if method == 'default':
-            self.vertical_traffic_light.update_colored_timer()
-            self.horizontal_traffic_light.update_colored_timer()
+        
     
     def get_waiting_time(self, vehicle):
         if vehicle.current_road == self.horizontal_road:

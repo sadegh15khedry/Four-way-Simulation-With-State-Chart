@@ -82,22 +82,22 @@ def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, 
         print(f"path: {vehicle.path}")
     return vehicles, vehicle_id_counter
 
-def initialize_four_ways(horizontal_roads, vertical_roads, default_timer, yellow_timer):
+def initialize_four_ways(horizontal_roads, vertical_roads, default_timer, yellow_timer, blinking_timer):
     four_ways = []
     count = 1
     for h_road in horizontal_roads:
         for v_road in vertical_roads:
-            four_way = FourWay(count, h_road.row_index, v_road.column_index, h_road, v_road)
+            four_way = FourWay(count, h_road.row_index, v_road.column_index, h_road, v_road, default_timer, yellow_timer, blinking_timer)
             count += 1
             four_ways.append(four_way)
             print(f"four way:{four_way.id} x:{four_way.x} y:{four_way.y}, horizontal_road {h_road.id}, vertical_road {v_road.id}")
             v_road.four_ways.append(four_way)
             h_road.four_ways.append(four_way)
     
-    for four_way in four_ways:
-        four_way.default_timer = default_timer
-        four_way.yellow_timer = yellow_timer
-        
+    # for four_way in four_ways:
+    #     four_way.default_timer = default_timer
+    #     four_way.yellow_timer = yellow_timer
+    #     four_way.blinking_timer = blinking_timer
     return four_ways
 
 def initialize_graph(roads, four_ways, vertical_roads, horizontal_roads, min_weight, max_weight):
