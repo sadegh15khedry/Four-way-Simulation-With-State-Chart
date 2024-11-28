@@ -49,6 +49,13 @@ class FourWay:
         elif vehicle.current_road == self.vertical_road:
             return self.vertical_traffic_light.get_waiting_time()
     
+    def get_other_road(self, road):
+        if road == self.horizontal_road:
+            return self.vertical_road
+        elif road == self.vertical_road:
+            return self.horizontal_road
+        
+    
     def print_four_way_status(self):
         if(self.vertical_traffic_light == 1):
             v = 'green'
