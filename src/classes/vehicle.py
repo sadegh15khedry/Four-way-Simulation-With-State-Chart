@@ -59,7 +59,7 @@ class Vehicle:
             self.set_event(current_time, (self.current_x, self.current_y), 'four_way_waiting', current_time+waiting_time) 
             # print(f"vehicle:{self.id} vehicle_x:{self.current_x}, vehicle_y:{self.current_y}, four_way: {four_way.id}, waiting_time:{waiting_time}")
             print(self.event)
-            print(f"road:{self.current_road.id}")
+            print(f"road:{self.current_road.id}, four_way:{self.last_four_way.id}")
             if waiting_time == 0:
                 print('green light!') 
                 self.check_event(current_time, four_ways, roads)
