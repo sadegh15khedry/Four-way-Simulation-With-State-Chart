@@ -46,7 +46,7 @@ class Vehicle:
             self.current_y = self.event['destination'][1]
             
             # checking if we reached the end
-            if self.event_counter == len(self.path):
+            if self.event_counter == len(self.path) or (self.current_x == self.end_x and self.current_y == self.end_y):
                 self.has_reached_destination = True
                 self.travel_end_time = current_time
                 print(f"Vehicle {self.id} has reached the destination location:({self.current_x}, {self.current_y}) start_time:{self.travel_start_time}, end_time:{self.travel_end_time} travel_end_time:{self.travel_end_time} ")
@@ -55,14 +55,12 @@ class Vehicle:
             self.event_counter += 0.5
             four_way = self.get_four_way_using_location(four_ways)
             waiting_time = four_way.get_waiting_time(self)
-            print(f"vehicle:{self.id} vehicle_x:{self.current_x}, vehicle_y:{self.current_y}, four_way: {four_way.id}, four_way_x:{four_way.x}, four_way_y:{four_way.y} waiting_time:{waiting_time}")
-            self.set_event(current_time, (self.current_x, self.current_y), 'four_way_waiting', waiting_time) 
-
-            
-            
-                
-            print(f"Vehicle {self.id} reached ({self.current_x}, {self.current_y})")
+            self.set_event(current_time, (self.current_x, self.current_y), 'four_way_waiting', current_time+waiting_time) 
+            # print(f"vehicle:{self.id} vehicle_x:{self.current_x}, vehicle_y:{self.current_y}, four_way: {four_way.id}, waiting_time:{waiting_time}")
             print(self.event)
+            if waiting_time == 0:
+                print('green light!') 
+                self.check_event(current_time, four_ways, roads)
             
         # moving to the next four way    
         elif (self.event['type'] == 'four_way_waiting' and self.event['reaching_time'] == current_time):
@@ -71,7 +69,7 @@ class Vehicle:
             self.set_event(current_time, (step['x'], step['y']), 'moving', reaching_time)
             self.event_counter += .5
             
-            print(f"Vehicle {self.id} is on the way to ({self.current_x}, {self.current_y})")
+            # print(f"Vehicle {self.id} is on the way to ({self.current_x}, {self.current_y})")
             print(self.event)
                 
         
