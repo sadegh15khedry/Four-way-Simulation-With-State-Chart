@@ -44,13 +44,5 @@ class TrafficLight:
                 self.time_remaining = self.blinking_timer
     
             
-    def get_waiting_time(self):
-        waiting_time = None
-        if self.state == 1:
-            waiting_time = 0
-        elif self.state == 2:
-            waiting_time = self.time_remaining + self.default_timer
-        elif self.state == 3:
-            waiting_time = self.time_remaining
-            
-        return waiting_time
+    # def get_waiting_time(self):
+        

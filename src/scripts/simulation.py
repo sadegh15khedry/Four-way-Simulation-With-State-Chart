@@ -14,7 +14,7 @@ class Simulation:
         self.max_road_time = max_road_time
         self.iteration_vehicle_generation = iteration_vehicle_generation
         self.vehicle_id_counter = 1
-        self.iteration_number = 0
+        self.time = 0
         self.vehicles = []
         self.roads = []
         self.four_ways = []
@@ -35,17 +35,16 @@ class Simulation:
         self.graph.draw()
         
         print (f"Simulation Started!!--------------------------------------------------------------------------")
-        for self.iteration_number in range(self.max_time_steps):
-            print (f"iteration:{self.iteration_number} started-------------------------------------------------")
+        for self.time in range(self.max_time_steps):
+            print (f"iteration:{self.time} started-------------------------------------------------")
             
             self.generate_iteration_vehicles()
             self.update_traffic_lights()
             self.print_traffic_lights_status()
-        # #     self.check_vehicle_events()
+            self.check_vehicle_events()
             
-        # #     #vehicles_event_handler(self.vehicles, self.roads, self.four_ways, self.iteration_number)
-        # #     print (f"iteration: {self.iteration_number} ended-------------------------------------------------------")
-        # #     print("")
+            print (f"time: {self.time} ended-------------------------------------------------------")
+            print("")
         # print (f"Simulation Ended!!--------------------------------------------------------------------------")
         
             
@@ -53,15 +52,14 @@ class Simulation:
             
             
     def generate_iteration_vehicles(self):
-        new_vehicles, new_vehicle_id_counter = initialize_vehicles(self.iteration_number, self.roads, self.iteration_vehicle_generation, self.max_vehicle_count, self.vehicle_id_counter, self.row_count, self.column_count, self.graph)
+        new_vehicles, new_vehicle_id_counter = initialize_vehicles(self.time, self.roads, self.iteration_vehicle_generation, self.max_vehicle_count, self.vehicle_id_counter, self.row_count, self.column_count, self.graph)
         self.vehicle_id_counter = new_vehicle_id_counter
         for vehicle in new_vehicles:
             self.vehicles.append(vehicle)
             
     def update_traffic_lights(self):
         for four_way in self.four_ways:
-            four_way.vertical_traffic_light.update_colored_timer(self.method, self.iteration_number)
-            four_way.horizontal_traffic_light.update_colored_timer(self.method, self.iteration_number)
+            four_way.update_traffic_lights_colors(self.method, self.time)
             
     
     def print_traffic_lights_status(self):
@@ -69,5 +67,11 @@ class Simulation:
             four_way.print_four_way_status()
             
     def check_vehicle_events(self):
-        for vehicle in self.vehicles:
-            vehicle.check_event(self.iteration_number, self.four_ways, self.roads)
+        if self.method == 'default':
+            for vehicle in self.vehicles:
+                vehicle.check_default_event(self.time, self.four_ways, self.roads, self.time)
+        elif self.method == 'proposed':
+            for vehicle in self.vehicles:
+                vehicle.update_vehicle_location(self.time, self.four_ways)
+            for vehicle in self.vehicles:
+                vehicle.check_proposed_event(self.time, self.four_ways, self.roads, self.time)
