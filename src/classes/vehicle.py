@@ -50,6 +50,7 @@ class Vehicle:
             if self.event_counter == len(self.path) or (self.current_x == self.end_x and self.current_y == self.end_y):
                 self.has_reached_destination = True
                 self.travel_end_time = current_time
+                self.travel_duration = self.travel_end_time - self.travel_start_time 
                 print(f"Vehicle {self.id} has reached the destination location:({self.current_x}, {self.current_y}) start_time:{self.travel_start_time}, end_time:{self.travel_end_time} travel_end_time:{self.travel_end_time} ")
                 return
             
@@ -64,7 +65,7 @@ class Vehicle:
             print(f"road:{self.current_road.id}, four_way:{self.last_four_way.id}")
             if waiting_time == 0:
                 print('green light!') 
-                self.check_default_event(current_time, four_ways, roads)
+                self.check_default_event(current_time, four_ways, roads, time)
             
         # moving to the next four way    
         elif (self.event['type'] == 'four_way_waiting' and self.event['reaching_time'] == current_time):
@@ -127,6 +128,7 @@ class Vehicle:
             if self.event_counter == len(self.path) or (self.current_x == self.end_x and self.current_y == self.end_y):
                 self.has_reached_destination = True
                 self.travel_end_time = time
+                self.travel_duration = self.travel_end_time - self.travel_start_time 
                 print(f"Vehicle {self.id} has reached the destination location:({self.current_x}, {self.current_y}) start_time:{self.travel_start_time}, end_time:{self.travel_end_time} travel_end_time:{self.travel_end_time} ")
                 return
             self.last_four_way = self.get_four_way_using_location(four_ways)

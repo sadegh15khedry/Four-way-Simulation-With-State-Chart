@@ -1,11 +1,12 @@
 import random
 
 class FourWay:
-    def __init__(self, id, x, y, horizontal_road, vertical_road, default_timer, yellow_timer, blinking_timer):
+    def __init__(self, id, x, y, horizontal_road, vertical_road, default_timer, yellow_timer, blinking_timer, crowded_thresholds):
         self.id = id
         self.x = x
         self.y = y
         self.horizontal_road = horizontal_road
+        self.crowded_thresholds = crowded_thresholds
         self.vertical_road = vertical_road
         self.horizontal_traffic_light = None
         self.vertical_traffic_light = None
@@ -104,13 +105,18 @@ class FourWay:
             return self.horizontal_road
         
     def get_blinking_delay(self):
-        n1 = len(self.horizontal_traffic_light.waiting_vehicles)
-        n2 =  len(self.vertical_traffic_light.waiting_vehicles)
-        # print(f"h_id: {self.horizontal_traffic_light.id} has {n1}, v_id: {self.horizontal_traffic_light.id} has {n2}")
-        number_of_four_way_vehicles = n1 + n2
+        number_of_four_way_vehicles = len(self.horizontal_traffic_light.waiting_vehicles) + len(self.vertical_traffic_light.waiting_vehicles)
         
         print(f"number of vehicles:{number_of_four_way_vehicles}")
         return 2 ** number_of_four_way_vehicles
     
+    
+    def is_crowded(self):
+        number_of_four_way_vehicles = len(self.horizontal_traffic_light.waiting_vehicles) + len(self.vertical_traffic_light.waiting_vehicles)
+        if (number_of_four_way_vehicles < self.crowded_thresholds):
+            return False
+        else:
+            return True
+
     def print_four_way_status(self):
         print (f'four_way: {self.id}, vertical_status:{self.vertical_traffic_light.get_status_color()} v_time_remaining:{self.vertical_traffic_light.time_remaining}, horizontal_status:{self.horizontal_traffic_light.get_status_color()} h_time_remaining:{self.horizontal_traffic_light.time_remaining}')

@@ -138,7 +138,6 @@ class Graph:
 
     
     def shortest_path(self, source_x, source_y, destination_x, destination_y):
-        # Find the source and destination nodes
         source_node = None
         destination_node = None
         for node in self.nodes:
@@ -151,26 +150,21 @@ class Graph:
             print("Source or destination node not found.")
             return []
 
-        # Initialize distances and previous nodes
         distances = {node: float('inf') for node in self.nodes}
         previous_nodes = {node: None for node in self.nodes}
         distances[source_node] = 0
 
-        # Priority queue for the nodes to visit
         queue = [(0, source_node.id, source_node)]
         
         while queue:
             current_distance, _, current_node = heapq.heappop(queue)
             
-            # If we reached the destination, break
             if current_node == destination_node:
                 break
 
-            # Skip if we have already found a better path
             if current_distance > distances[current_node]:
                 continue
 
-            # Explore neighbors
             for neighbor, weight in current_node.neighbors:
                 distance = current_distance + weight
                 if distance < distances[neighbor]:
@@ -178,7 +172,6 @@ class Graph:
                     previous_nodes[neighbor] = (current_node, weight)
                     heapq.heappush(queue, (distance, neighbor.id, neighbor))
         
-        # Reconstruct the path from destination to source
         path = []
         current = destination_node
         while current != source_node:
@@ -194,7 +187,6 @@ class Graph:
             path.append(step)
             current = prev_node
         
-        # Add the source node to the path
         path.append({'x': source_node.x, 'y': source_node.y, 'weight': 0})
         path.reverse()  # Reverse the path to start from the source
         return path

@@ -37,12 +37,22 @@ class TrafficLight:
             elif self.state == 3:
                 self.state = 1
                 self.time_remaining = self.default_timer
+        
         elif method == 'proposed':
             if self.state == 0 and self.time_remaining > 1:
                 self.time_remaining = self.time_remaining - 1
             elif self.state == 0 and self.time_remaining == 1:
-                self.time_remaining = self.blinking_timer
-    
-            
-    # def get_waiting_time(self):
+                self.evaluate_state()  
+            elif self.time_remaining > 1:
+                self.time_remaining -= 1
+            elif self.time_remaining == 1:
+                self.evaluate_state()
+                
+    def evaluate_state(self):
+        is_crowded = self.four_way.is_crowded()
+        if is_crowded == False:
+            self.time_remaining = self.blinking_timer
+        elif is_crowded == True:
+            self.four_way.set_four_traffic_lights_color()       
+
         
