@@ -33,10 +33,9 @@ class Vehicle:
         if self.event_counter == 1:
             step = self.path[int(self.event_counter)]
             reaching_time = current_time + step['weight']
-            print(f'event_counter {self.event_counter}')
             self.set_event(current_time, (step['x'], step['y']), 'moving', reaching_time)
             self.event_counter += .5
-            print(f"Vehicle {self.id} is on the way  to ({self.current_x}, {self.current_y})")
+            print(f"Vehicle {self.id} is on the way  to {step['x']}, {step['y']})")
             print(self.event)
         
         elif len(self.path) < self.event_counter:
@@ -52,7 +51,7 @@ class Vehicle:
             if self.event_counter == len(self.path):
                 self.has_reached_destination = True
                 self.travel_end_time = current_time
-                print(f"Vehicle {self.id} has reached the end destination location:({self.current_x}, {self.current_y}) start_time:{self.travel_start_time}, travel_end_time:{self.travel_end_time} ")
+                print(f"Vehicle {self.id} has reached the destination location:({self.current_x}, {self.current_y}) start_time:{self.travel_start_time}, end_time:{self.travel_end_time} travel_end_time:{self.travel_end_time} ")
                 return
             
             print(f'event_counter {self.event_counter}')

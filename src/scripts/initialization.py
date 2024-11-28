@@ -54,11 +54,11 @@ def initialize_vertical_and_horizontal_roads(roads):
     for road in roads:
         if road.row_index is not None:
             horizontal_roads.append(road)
-            print(f'road{road.id}, added to horizontal roads')
+            # print(f'road{road.id}, added to horizontal roads')
             
         else:
             vertical_roads.append(road)
-            print(f'road{road.id}, added to vertical roads')
+            # print(f'road{road.id}, added to vertical roads')
             
     return horizontal_roads, vertical_roads
 
@@ -82,7 +82,7 @@ def initialize_vehicles(iteration_number, roads , iteration_vehicle_generation, 
         print(f"path: {vehicle.path}")
     return vehicles, vehicle_id_counter
 
-def initialize_four_ways(horizontal_roads, vertical_roads):
+def initialize_four_ways(horizontal_roads, vertical_roads, default_timer, yellow_timer):
     four_ways = []
     count = 1
     for h_road in horizontal_roads:
@@ -94,6 +94,10 @@ def initialize_four_ways(horizontal_roads, vertical_roads):
             v_road.four_ways.append(four_way)
             h_road.four_ways.append(four_way)
     
+    for four_way in four_ways:
+        four_way.default_timer = default_timer
+        four_way.yellow_timer = yellow_timer
+        
     return four_ways
 
 def initialize_graph(roads, four_ways, vertical_roads, horizontal_roads, min_weight, max_weight):
@@ -127,7 +131,8 @@ def initialize_graph(roads, four_ways, vertical_roads, horizontal_roads, min_wei
        
     return graph
 
-def initialize_traffic_lights(four_ways):
+def initialize_traffic_lights(four_ways, method):
+    # if method == 'default':
     counter = 1
     for four_way in four_ways:
         horizontal_traffic_light = TrafficLight(counter, four_way, four_way.horizontal_road)
@@ -137,6 +142,8 @@ def initialize_traffic_lights(four_ways):
         
         four_way.horizontal_traffic_light = horizontal_traffic_light
         four_way.vertical_traffic_light = vertical_traffic_light
-        print(f"initialized traffic_light {horizontal_traffic_light.id} four_way: {horizontal_traffic_light.four_way.id}, road {horizontal_traffic_light.road.id}")
-        print(f"initialized traffic_light {vertical_traffic_light.id} four_way: {vertical_traffic_light.four_way.id}, road {vertical_traffic_light.road.id}")
+        four_way.initialize_traffic_lights_colors(method)
+
+    # print(f"initialized traffic_light {horizontal_traffic_light.id} four_way: {horizontal_traffic_light.four_way.id}, road {horizontal_traffic_light.road.id}")
+    # print(f"initialized traffic_light {vertical_traffic_light.id} four_way: {vertical_traffic_light.four_way.id}, road {vertical_traffic_light.road.id}")
     

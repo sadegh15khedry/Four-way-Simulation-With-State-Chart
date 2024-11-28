@@ -1,10 +1,10 @@
 from initialization import initialize_roads, initialize_four_ways, initialize_graph, initialize_vehicles, initialize_vertical_and_horizontal_roads, initialize_traffic_lights
 
 class Simulation:
-    def __init__(self, method, default_timer, row_count, column_count, max_time_steps, max_vehicle_count, iteration_vehicle_generation, min_road_time, max_road_time, yellow_light_duration):
+    def __init__(self, method, default_timer, row_count, column_count, max_time_steps, max_vehicle_count, iteration_vehicle_generation, min_road_time, max_road_time, yellow_timer):
         self.method = method
         self.default_timer = default_timer
-        self.yellow_light_duration = yellow_light_duration
+        self.yellow_timer = yellow_timer
         self.row_count = row_count
         self.column_count = column_count
         self.max_time_steps = max_time_steps
@@ -27,28 +27,42 @@ class Simulation:
     def run(self):
         self.roads = initialize_roads(self.row_count, self.column_count)
         self.horizontal_roads, self.vertical_roads = initialize_vertical_and_horizontal_roads(self.roads)
-        self.four_ways = initialize_four_ways(self.horizontal_roads, self.vertical_roads)
-        initialize_traffic_lights(self.four_ways)
-
-        for four_way in self.four_ways:
-            four_way.initialize_traffic_lights_colors(self.method, self.default_timer, self.yellow_light_duration)        
+        self.four_ways = initialize_four_ways(self.horizontal_roads, self.vertical_roads,  self.default_timer, self.yellow_timer)
+        initialize_traffic_lights(self.four_ways,  self.method)
                 
         self.graph = initialize_graph(self.roads, self.four_ways, self.vertical_roads, self.horizontal_roads, self.min_road_time, self.max_road_time)
         self.graph.draw()
         
-        print (f"Simulation Started!!-----------------------------------------------------------------------")
+        print (f"Simulation Started!!--------------------------------------------------------------------------")
         for self.iteration_number in range(self.max_time_steps):
-            print (f"iteration: {self.iteration_number} started-------------------------------------------------")
+            print (f"iteration:{self.iteration_number} started-------------------------------------------------")
             
-            new_vehicles, new_vehicle_id_counter = initialize_vehicles(self.iteration_number, self.roads, self.iteration_vehicle_generation, self.max_vehicle_count, self.vehicle_id_counter, self.row_count, self.column_count, self.graph)
-            self.vehicle_id_counter = new_vehicle_id_counter
-            for vehicle in new_vehicles:
-                self.vehicles.append(vehicle)
+            self.generate_iteration_vehicles()
+            self.update_traffic_lights()
+            self.print_traffic_lights_status()
+            self.check_vehicle_events()
             
-            for vehicle in self.vehicles:
-                vehicle.check_event(self.iteration_number)
-                
-                
-            # vehicles_event_handler(self.vehicles, self.roads, self.four_ways, self.iteration_number)
+            #vehicles_event_handler(self.vehicles, self.roads, self.four_ways, self.iteration_number)
             print (f"iteration: {self.iteration_number} ended-------------------------------------------------------")
+            print("")
             
+        
+            
+            
+    def generate_iteration_vehicles(self):
+        new_vehicles, new_vehicle_id_counter = initialize_vehicles(self.iteration_number, self.roads, self.iteration_vehicle_generation, self.max_vehicle_count, self.vehicle_id_counter, self.row_count, self.column_count, self.graph)
+        self.vehicle_id_counter = new_vehicle_id_counter
+        for vehicle in new_vehicles:
+            self.vehicles.append(vehicle)
+            
+    def update_traffic_lights(self):
+        for four_way in self.four_ways:
+            four_way.update_traffic_light_color(self.method ,self.iteration_number)
+    
+    def print_traffic_lights_status(self):
+        for four_way in self.four_ways:
+            four_way.print_four_way_status() 
+            
+    def check_vehicle_events(self):
+        for vehicle in self.vehicles:
+            vehicle.check_event(self.iteration_number)
