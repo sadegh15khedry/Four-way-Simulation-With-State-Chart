@@ -1,7 +1,6 @@
 class Vehicle:
     def __init__(self, id, travel_start_time, start_road, end_road):
         self.id = id
-        self.current_road = start_road
         
         self.current_x = start_road.start_x
         self.current_y = start_road.start_y
@@ -19,8 +18,8 @@ class Vehicle:
         self.travel_duration = None
         
         self.start_road = start_road
+        self.current_road = start_road
         self.end_road = end_road
-        self.travel_end = None
         self.path = []
         
         
@@ -28,7 +27,7 @@ class Vehicle:
         event = {'type': event_type, 'setting time':current_time, 'destination':destination, "reaching_time": reaching_time }
         self.event = event
         
-    def check_event(self, current_time):
+    def check_event(self, current_time, four_ways, roads):
         
         if self.event_counter == 1:
             step = self.path[int(self.event_counter)]
@@ -45,7 +44,6 @@ class Vehicle:
         elif (self.event['type'] == 'moving' and self.event['reaching_time'] == current_time):
             self.current_x = self.event['destination'][0]
             self.current_y = self.event['destination'][1]
-            self.event_counter += 0.5
             
             # checking if we reached the end
             if self.event_counter == len(self.path):
@@ -54,10 +52,12 @@ class Vehicle:
                 print(f"Vehicle {self.id} has reached the destination location:({self.current_x}, {self.current_y}) start_time:{self.travel_start_time}, end_time:{self.travel_end_time} travel_end_time:{self.travel_end_time} ")
                 return
             
-            print(f'event_counter {self.event_counter}')
-            # four_way_delay_time = self.get_four_way_delay_time()
-            self.set_event(current_time, (self.current_x, self.current_y), 'four_way_waiting', current_time + 3) 
-            # self.set_event(current_time, (self.current_x, self.current_y), 'four_way_waiting', current_time + four_way_delay_time) #TODO: Update this
+            self.event_counter += 0.5
+            four_way = self.get_four_way_using_location(four_ways)
+            waiting_time = four_way.get_waiting_time(self)
+            print(f"vehicle:{self.id} vehicle_x:{self.current_x}, vehicle_y:{self.current_y}, four_way: {four_way.id}, four_way_x:{four_way.x}, four_way_y:{four_way.y} waiting_time:{waiting_time}")
+            self.set_event(current_time, (self.current_x, self.current_y), 'four_way_waiting', waiting_time) 
+
             
             
                 
@@ -68,25 +68,12 @@ class Vehicle:
         elif (self.event['type'] == 'four_way_waiting' and self.event['reaching_time'] == current_time):
             step = self.path[int(self.event_counter)]
             reaching_time = current_time + step['weight']
-            print(f'event_counter {self.event_counter}')
             self.set_event(current_time, (step['x'], step['y']), 'moving', reaching_time)
             self.event_counter += .5
             
             print(f"Vehicle {self.id} is on the way to ({self.current_x}, {self.current_y})")
             print(self.event)
-    
-    def get_four_way_delay_time(self):
-        four_way = self.get_four_way_using_location
-        traffic_light = None
-        
-        # if self.current_road == four_way.horizontal_road:
-            # traffic_light = self.horizontal_traffic_light
-            # pass
-        # elif self.current_road == four_way.vertical_road:
-            # traffic_light = self.vertical_traffic_light
-            # pass
-        
-           
+                
         
     def get_four_way_using_location(self, four_ways):
         for four_way in four_ways:

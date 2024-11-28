@@ -11,7 +11,8 @@ class FourWay:
         self.vertical_traffic_light = None
         self.default_timer = None
         self.yellow_timer = None
-        
+        self.vehicles = []
+
 
     def initialize_traffic_lights_colors(self, method):
         if method ==  'default':
@@ -41,7 +42,13 @@ class FourWay:
         if method == 'default':
             self.vertical_traffic_light.update_colored_timer()
             self.horizontal_traffic_light.update_colored_timer()
-   
+    
+    def get_waiting_time(self, vehicle):
+        if vehicle.current_road == self.horizontal_road:
+            return self.horizontal_traffic_light.get_waiting_time()
+        elif vehicle.current_road == self.vertical_road:
+            return self.vertical_traffic_light.get_waiting_time()
+    
     def print_four_way_status(self):
         if(self.vertical_traffic_light == 1):
             v = 'green'

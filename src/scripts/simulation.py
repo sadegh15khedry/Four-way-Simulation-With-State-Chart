@@ -65,4 +65,4 @@ class Simulation:
             
     def check_vehicle_events(self):
         for vehicle in self.vehicles:
-            vehicle.check_event(self.iteration_number)
+            vehicle.check_event(self.iteration_number, self.four_ways, self.roads)
