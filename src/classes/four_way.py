@@ -1,5 +1,5 @@
 import random
-
+import math
 class FourWay:
     def __init__(self, id, x, y, horizontal_road, vertical_road, default_timer, yellow_timer, blinking_timer, crowded_thresholds):
         self.id = id
@@ -119,20 +119,38 @@ class FourWay:
         else:
             return True
 
-    def set_four_traffic_lights_color(self, time):
+    def set_initial_smart_four_way_traffic_lights_color(self, time):
+        print("we are right here #############################################################################")
         horizontal_count, vertical_count = self.get_horizontal_and_vertical_vehicle_count(time)
         if horizontal_count > vertical_count:
+            smart_timer = self.get_smart_timer_value(horizontal_count)
+            print(f'smart_timer: {smart_timer}')
             self.horizontal_traffic_light.state = 1
-            self.horizontal_traffic_light.time_remaining = self.default_timer
+            self.horizontal_traffic_light.time_remaining = smart_timer
             self.vertical_traffic_light.state = 3
-            self.vertical_traffic_light.time_remaining = self.default_timer + self.yellow_timer
+            self.vertical_traffic_light.time_remaining = smart_timer + self.yellow_timer
+            print(f'h_time: {self.horizontal_traffic_light.time_remaining}')
+            print(f'v_time: {self.vertical_traffic_light.time_remaining}')
             
-        elif horizontal_count < vertical_count:
+            
+        elif horizontal_count <= vertical_count:
+            smart_timer = self.get_smart_timer_value(horizontal_count)
+            print(f'smart_timer: {smart_timer}')
             self.vertical_traffic_light.state = 1
-            self.vertical_traffic_light.time_remaining = self.default_timer
+            self.vertical_traffic_light.time_remaining = smart_timer
             self.horizontal_traffic_light.state = 3
-            self.horizontal_traffic_light.time_remaining = self.default_timer + self.yellow_timer
-        
+            self.horizontal_traffic_light.time_remaining = smart_timer + self.yellow_timer
+            print(f'h_time: {self.horizontal_traffic_light.time_remaining}')
+            print(f'v_time: {self.vertical_traffic_light.time_remaining}')
+            
+            
+    def get_smart_timer_value(self, vehicle_count):
+        if vehicle_count < 10:
+            return 1
+        value = int(math.log10(vehicle_count))
+        print(f"smart_timer_value: {value}")
+        return value
+           
     def get_vehicle_count_by_duration(self, time):
         count = 0
         for row in self.vehicles_history:
