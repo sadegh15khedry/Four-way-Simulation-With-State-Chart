@@ -51,8 +51,35 @@ class FourWay:
         self.print_four_way_status()
         
     def update_traffic_lights_colors(self, method, time):
-        self.vertical_traffic_light.update_colored_timer(method, time)
-        self.horizontal_traffic_light.update_colored_timer(method, time)
+        if method == 'default':
+            self.vertical_traffic_light.update_colored_timer(method, time)
+            self.horizontal_traffic_light.update_colored_timer(method, time)
+        
+        elif method == 'proposed':
+            is_crowded = self.is_crowded(time)
+            v_time = self.vertical_traffic_light.time_remaining
+            v_state = self.vertical_traffic_light.state
+            
+            h_time = self.horizontal_traffic_light.time_remaining
+            h_state = self.horizontal_traffic_light.state
+            
+            print(f"v_state:{v_state}, v_time:{v_time}, h_state:{h_state}, h_time:{h_time}, is_crowded:{is_crowded}")
+            
+            if  h_time > 1 and v_time > 1: # count down
+                print('count down')
+                self.horizontal_traffic_light.time_remaining = self.horizontal_traffic_light.time_remaining - 1
+                self.vertical_traffic_light.time_remaining = self.vertical_traffic_light.time_remaining - 1
+                
+            elif v_state == 0 and h_state == 0 and v_time == 1 and h_time == 1 and is_crowded == False: # blinking to blinking
+                self.horizontal_traffic_light.time_remaining = self.blinking_timer
+                self.vertical_traffic_light.time_remaining = self.blinking_timer
+
+            elif  v_state == 0 and h_state == 0 and v_time == 1 and is_crowded == True: # blinking to colors
+                print("blinking to colors")
+                self.set_initial_smart_four_way_traffic_lights_color(time)
+
+            # elif self.time_remaining == 0 and (self.state == 1 or self.state == 1 or self.state == 1) and is_crowded == True: # color update
+            #     self.four_way.set_smart_four_traffic_lights_color(time)
         
     def add_vehicle_to_four_way(self, vehicle, time):
         if vehicle.current_road == self.vertical_road:
