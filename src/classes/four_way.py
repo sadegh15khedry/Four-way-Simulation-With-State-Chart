@@ -110,13 +110,46 @@ class FourWay:
         print(f"number of vehicles:{number_of_four_way_vehicles}")
         return 2 ** number_of_four_way_vehicles
     
-    
-    def is_crowded(self):
-        number_of_four_way_vehicles = len(self.horizontal_traffic_light.waiting_vehicles) + len(self.vertical_traffic_light.waiting_vehicles)
+   
+    def is_crowded(self, time):
+        number_of_four_way_vehicles = self.get_vehicle_count_by_duration(time)
+        print(f"four_way:{self.id}, number of vehicles:{number_of_four_way_vehicles}")
         if (number_of_four_way_vehicles < self.crowded_thresholds):
             return False
         else:
             return True
 
+    def set_four_traffic_lights_color(self, time):
+        horizontal_count, vertical_count = self.get_horizontal_and_vertical_vehicle_count(time)
+        if horizontal_count > vertical_count:
+            self.horizontal_traffic_light.state = 1
+            self.horizontal_traffic_light.time_remaining = self.default_timer
+            self.vertical_traffic_light.state = 3
+            self.vertical_traffic_light.time_remaining = self.default_timer + self.yellow_timer
+            
+        elif horizontal_count < vertical_count:
+            self.vertical_traffic_light.state = 1
+            self.vertical_traffic_light.time_remaining = self.default_timer
+            self.horizontal_traffic_light.state = 3
+            self.horizontal_traffic_light.time_remaining = self.default_timer + self.yellow_timer
+        
+    def get_vehicle_count_by_duration(self, time):
+        count = 0
+        for row in self.vehicles_history:
+            if row['time'] <= time and row['time'] > time - self.blinking_timer:
+                count += 1
+        return count
+    
+    def get_horizontal_and_vertical_vehicle_count(self, time):
+        horizontal_count = 0
+        vertical_count = 0
+        for row in self.vehicles_history:
+            if row['time'] <= time and row['time'] > time - self.blinking_timer and row['road_id'] == self.horizontal_road.id:
+                horizontal_count += 1
+            elif row['time'] <= time and row['time'] > time - self.blinking_timer and row['road_id'] == self.vertical_road.id:
+                vertical_count += 1
+        return horizontal_count, vertical_count
+
+        return count            
     def print_four_way_status(self):
         print (f'four_way: {self.id}, vertical_status:{self.vertical_traffic_light.get_status_color()} v_time_remaining:{self.vertical_traffic_light.time_remaining}, horizontal_status:{self.horizontal_traffic_light.get_status_color()} h_time_remaining:{self.horizontal_traffic_light.time_remaining}')

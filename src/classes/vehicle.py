@@ -103,7 +103,7 @@ class Vehicle:
             print(f"road:{self.current_road.id}, four_way:{self.last_four_way.id}")
             if waiting_time == 0:
                 print('green light!') 
-                self.check_event(current_time, four_ways, roads)
+                self.check_proposed_event(current_time, four_ways, roads)
             
         # moving to the next four way    
         elif (self.event['type'] == 'four_way_waiting' and self.event['reaching_time'] == current_time):
