@@ -50,23 +50,23 @@ class FourWay:
             
         self.print_four_way_status()
         
-    def update_traffic_lights_colors(self, method, time):
+    def update_traffic_lights_colors(self, method, time, vehicles):
         if method == 'default':
             self.vertical_traffic_light.update_colored_timer(method, time)
             self.horizontal_traffic_light.update_colored_timer(method, time)
         
         elif method == 'proposed':
-            is_crowded = self.is_crowded(time)
+            is_crowded = self.is_crowded(time, vehicles)
             v_time = self.vertical_traffic_light.time_remaining
             v_state = self.vertical_traffic_light.state
             
             h_time = self.horizontal_traffic_light.time_remaining
             h_state = self.horizontal_traffic_light.state
             
-            print(f"v_state:{v_state}, v_time:{v_time}, h_state:{h_state}, h_time:{h_time}, is_crowded:{is_crowded}")
+            # print(f"v_state:{v_state}, v_time:{v_time}, h_state:{h_state}, h_time:{h_time}, is_crowded:{is_crowded}")
             
             if  h_time > 1 and v_time > 1: # count down
-                print('count down')
+                # print('count down')
                 self.horizontal_traffic_light.time_remaining = self.horizontal_traffic_light.time_remaining - 1
                 self.vertical_traffic_light.time_remaining = self.vertical_traffic_light.time_remaining - 1
                 
@@ -75,7 +75,7 @@ class FourWay:
                 self.vertical_traffic_light.time_remaining = self.blinking_timer
 
             elif  v_state == 0 and h_state == 0 and v_time == 1 and is_crowded == True: # blinking to colors
-                print("blinking to colors")
+                # print("blinking to colors")
                 self.set_initial_smart_four_way_traffic_lights_color(time)
 
             elif v_time == 1 or h_time == 1 and is_crowded == True: # color to color
@@ -91,11 +91,11 @@ class FourWay:
         if vehicle.current_road == self.vertical_road:
             self.vertical_traffic_light.waiting_vehicles.append(vehicle)
             self.vehicles_history.append({'vehicle_id': vehicle.id, 'time': time, 'road_id': vehicle.current_road.id})
-            print(f'vehicle: {vehicle.id} added to four_way{self.id}, traffic_light: {self.vertical_traffic_light.id}')
+            # print(f'vehicle: {vehicle.id} added to four_way{self.id}, traffic_light: {self.vertical_traffic_light.id}')
             
         elif vehicle.current_road == self.horizontal_road:
             self.horizontal_traffic_light.waiting_vehicles.append(vehicle)
-            print(f'vehicle: {vehicle.id} added to four_way{self.id}, traffic_light: {self.horizontal_traffic_light.id}')
+            # print(f'vehicle: {vehicle.id} added to four_way{self.id}, traffic_light: {self.horizontal_traffic_light.id}')
             
             
     
@@ -103,7 +103,7 @@ class FourWay:
         for traffic_light in [self.horizontal_traffic_light, self.vertical_traffic_light]:
             if vehicle in traffic_light.waiting_vehicles:
                 traffic_light.waiting_vehicles.remove(vehicle)
-                print(f'vehicle: {vehicle.id} removed from four_way{self.id}, traffic_light: {traffic_light.id}')
+                # print(f'vehicle: {vehicle.id} removed from four_way{self.id}, traffic_light: {traffic_light.id}')
                 
                 
     
@@ -123,7 +123,7 @@ class FourWay:
         elif traffic_light.state == 1:
             waiting_time = 0
         elif traffic_light.state == 2:
-            waiting_time = traffic_light.time_remaining + self.default_timer
+            waiting_time = 0
         elif traffic_light.state == 3:
             waiting_time = traffic_light.time_remaining
         print(f"waiting time is {waiting_time}")
@@ -140,13 +140,14 @@ class FourWay:
     def get_blinking_delay(self):
         number_of_four_way_vehicles = len(self.horizontal_traffic_light.waiting_vehicles) + len(self.vertical_traffic_light.waiting_vehicles)
         
-        print(f"number of vehicles:{number_of_four_way_vehicles}")
+        # print(f"number of vehicles:{number_of_four_way_vehicles}")
         return 2 ** number_of_four_way_vehicles
     
    
-    def is_crowded(self, time):
-        number_of_four_way_vehicles = self.get_vehicle_count_by_duration(time)
-        print(f"four_way:{self.id}, number of vehicles:{number_of_four_way_vehicles}")
+    def is_crowded(self, time, vehicles):
+        # number_of_four_way_vehicles = self.get_vehicle_count_by_duration(time)
+        number_of_four_way_vehicles = len(vehicles)
+        # print(f"four_way:{self.id}, number of vehicles:{number_of_four_way_vehicles}")
         if (number_of_four_way_vehicles < self.crowded_thresholds):
             return False
         else:
@@ -162,8 +163,8 @@ class FourWay:
             self.horizontal_traffic_light.time_remaining = smart_timer
             self.vertical_traffic_light.state = 3
             self.vertical_traffic_light.time_remaining = smart_timer + self.yellow_timer
-            print(f'h_time: {self.horizontal_traffic_light.time_remaining}')
-            print(f'v_time: {self.vertical_traffic_light.time_remaining}')
+            # print(f'h_time: {self.horizontal_traffic_light.time_remaining}')
+            # print(f'v_time: {self.vertical_traffic_light.time_remaining}')
             
             
         elif horizontal_count <= vertical_count:
@@ -173,8 +174,8 @@ class FourWay:
             self.vertical_traffic_light.time_remaining = smart_timer
             self.horizontal_traffic_light.state = 3
             self.horizontal_traffic_light.time_remaining = smart_timer + self.yellow_timer
-            print(f'h_time: {self.horizontal_traffic_light.time_remaining}')
-            print(f'v_time: {self.vertical_traffic_light.time_remaining}')
+            # print(f'h_time: {self.horizontal_traffic_light.time_remaining}')
+            # print(f'v_time: {self.vertical_traffic_light.time_remaining}')
             
     def set_smart_four_way_traffic_lights_color(self, time):
         v_time = self.vertical_traffic_light.time_remaining
@@ -221,10 +222,11 @@ class FourWay:
         # elif h_time < v_time:
             
     def get_smart_timer_value(self, vehicle_count):
-        return 5
+        # return 5
         if vehicle_count < 10:
             return 1
         value = int(math.log10(vehicle_count))
+        # value = int(math.log10(value))
         print(f"smart_timer_value: {value}")
         return value
            

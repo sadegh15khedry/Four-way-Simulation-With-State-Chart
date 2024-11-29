@@ -47,31 +47,14 @@ class Simulation:
             
             print (f"time: {self.time} ended-------------------------------------------------------")
             print("")
-        # print (f"Simulation Ended!!--------------------------------------------------------------------------")
+        print (f"Simulation Ended!!--------------------------------------------------------------------------")
         self.save_report()
             
         
             
     
 
-    def save_report(self):
-        header=["vehicle_id", "start_time", "end_time", "duration"]
-        report_path = '../results/'+self.method+'_'+str(len(self.vehicles))+'.csv'
-        
-        file_list = [header]
-        # self.save_list_to_csv(header,report_path)
-        for vehicle in self.vehicles:
-            for vehicle in self.vehicles:
-                row = []
-                row=[vehicle.id, vehicle.travel_start_time, vehicle.travel_end_time, vehicle.travel_duration]
-                file_list.append(row)
-        
-        self.save_list_to_csv(file_list, report_path)
-        
-    def save_list_to_csv(self, list_data, file_path):
-        df = pd.DataFrame(list_data)
-        df.to_csv(file_path, index=False, header=False)
-        
+
         
     def generate_iteration_vehicles(self):
         new_vehicles, new_vehicle_id_counter = initialize_vehicles(self.time, self.roads, self.iteration_vehicle_generation, self.max_vehicle_count, self.vehicle_id_counter, self.row_count, self.column_count, self.graph)
@@ -81,7 +64,7 @@ class Simulation:
             
     def update_traffic_lights(self):
         for four_way in self.four_ways:
-            four_way.update_traffic_lights_colors(self.method, self.time)
+            four_way.update_traffic_lights_colors(self.method, self.time, self.vehicles)
             
     
     def print_traffic_lights_status(self):
@@ -100,3 +83,22 @@ class Simulation:
             
             for vehicle in self.vehicles:
                 vehicle.check_proposed_event(self.time, self.four_ways, self.roads, self.time)
+                
+    def save_report(self):
+        header=["vehicle_id", "start_time", "end_time", "duration"]
+        report_path = '../results/'+self.method+'_'+str(len(self.vehicles))+'.csv'
+            
+        file_list = [header]
+            # self.save_list_to_csv(header,report_path)
+        for vehicle in self.vehicles:
+            for vehicle in self.vehicles:
+                row = []
+                row=[vehicle.id, vehicle.travel_start_time, vehicle.travel_end_time, vehicle.travel_duration]
+                file_list.append(row)
+            
+            self.save_list_to_csv(file_list, report_path)
+        
+    def save_list_to_csv(self, list_data, file_path):
+        df = pd.DataFrame(list_data)
+        df.to_csv(file_path, index=False, header=False)
+        
