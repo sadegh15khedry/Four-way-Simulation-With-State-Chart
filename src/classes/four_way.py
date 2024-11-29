@@ -78,9 +78,15 @@ class FourWay:
                 print("blinking to colors")
                 self.set_initial_smart_four_way_traffic_lights_color(time)
 
-            elif v_time == 1 or h_time == 1: # color to color
+            elif v_time == 1 or h_time == 1 and is_crowded == True: # color to color
                 self.set_smart_four_way_traffic_lights_color(time)
-        
+                
+            elif  v_time == 1 or h_time == 1 and is_crowded == False:
+                self.horizontal_traffic_light.time_remaining = self.blinking_timer
+                self.horizontal_traffic_light.state = 0
+                
+                self.vertical_traffic_light.time_remaining = self.blinking_timer
+                self.vertical_traffic_light.state = 0
     def add_vehicle_to_four_way(self, vehicle, time):
         if vehicle.current_road == self.vertical_road:
             self.vertical_traffic_light.waiting_vehicles.append(vehicle)
